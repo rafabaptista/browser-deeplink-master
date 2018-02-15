@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+	
+	<script src="jquery-3.3.1.min.js" type="text/javascript"></script>
+    <style>
+    *, *:before, *:after {
+        box-sizing: border-box;
+    }
+    a, button {
+        font-family: monospace;
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+        padding: 25px;
+        background: #060;
+        color:#fff;
+        text-align: center;
+        font-size: 20px;
+		cursor: pointer;
+    }
+    </style>
+</head>
+<body>
+    <a href="clarobrasilminhanet://meutecnico/timeline">open deeplink web view</a>
+	<br />
+	<button onclick="launchAndroidApp('clarobrasilminhanet://meutecnico/timeline')" >Abrir Android</a>
+	<br />
+	<button onclick="launchiOSApp('clarobrasilminhanet://meutecnico/timeline')" >Abrir iOS</button>
+	<br />
+	<script type="text/javascript">
+
+		function launchiOSApp(url) {
+			 var appleAppStoreLink = 'https://itunes.apple.com/br/app/net/id518321053?mt=8';
+			 var now = new Date().valueOf();
+			 setTimeout(function () {
+				  if (new Date().valueOf() - now > 500) return;
+				  window.location = appleAppStoreLink;
+			 }, 100);
+			 window.location = url;
+		}
+		
+		function launchIframeApproach(url, alt) {
+			var iframe = document.createElement("iframe");
+			iframe.style.border = "none";
+			iframe.style.width = "1px";
+			iframe.style.height = "1px";
+			iframe.onload = function() {
+				document.location = alt;
+			}
+			document.body.appendChild(iframe);
+		}
+		
+		function launchWebkitApproach(url, alt) {
+			document.location = url;
+			timer = setTimeout(function () {
+				document.location = alt;
+			}, 2500);
+		}
+
+		function launchAndroidApp(url) {
+			var androidAppStore = "https://play.google.com/store/apps/details?id=br.com.net.netapp&hl=pt_BR";
+			var g_intent = "scheme=clarobrasilminhanet;package=br.com.net.netapp;end"; 
+			
+			if(navigator.userAgent.match(/Chrome/)) {
+				 var intent = url.replace('clarobrasilminhanet', 'intent') + '#Intent;' + g_intent; 
+				 document.location = intent;
+			} 
+			else if (navigator.userAgent.match(/Firefox/)) {
+				 launchWebkitApproach(url, androidAppStore);
+				 setTimeout(function () {
+					  launchIframeApproach(url, androidAppStore);
+				 }, 1500);
+			}
+			else {
+				launchIframeApproach(url, androidAppStore);
+			}
+		}
+    </script>
+	
+</body>
+
+</html>
